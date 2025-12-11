@@ -23,6 +23,7 @@ import com.example.hansrandy_masamba_comp304_002_test02.ui.theme.Hansrandy_masam
 import com.example.hansrandy_masamba_comp304_002_test02.viewmodel.StockViewModel
 import com.example.hansrandy_masamba_comp304_002_test02.viewmodel.StockViewModelFactory
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private lateinit var viewModel: StockViewModel
