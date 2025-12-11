@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DisplayActivity"
+            android:exported="false"
+            android:label="Stock Details"
+            android:theme="@style/Theme.Hansrandy_masamba_COMP304002_Test02" />
     </application>
 
 </manifest>
