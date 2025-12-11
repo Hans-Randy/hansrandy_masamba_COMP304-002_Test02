@@ -2,17 +2,17 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.example.hansrandy_masamba_comp304_002_test02"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.hansrandy_masamba_comp304_002_test02"
         minSdk = 25
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
