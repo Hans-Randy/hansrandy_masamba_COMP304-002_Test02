@@ -45,8 +45,10 @@ class MainActivity : ComponentActivity() {
                     MainScreen(
                         viewModel = viewModel,
                         onDisplayStock = { stock ->
-                            viewModel.setSelectedStock(stock)
-                            startActivity(Intent(this, DisplayActivity::class.java))
+                            val intent = Intent(this, DisplayActivity::class.java).apply {
+                                putExtra("STOCK_INFO", stock)
+                            }
+                            startActivity(intent)
                         }
                     )
                 }
@@ -155,12 +157,21 @@ fun MainScreen(
         )
 
         val context = androidx.compose.ui.platform.LocalContext.current
+        val searchCoroutineScope = rememberCoroutineScope()
 
         Button(
             onClick = {
                 if (searchQuery.isNotBlank()) {
-                    viewModel.searchStock(searchQuery)
-                    context.startActivity(Intent(context, DisplayActivity::class.java))
+                    searchCoroutineScope.launch {
+                        viewModel.searchStock(searchQuery)
+                        delay(100)
+                        viewModel.selectedStock.value?.let { stock ->
+                            val intent = Intent(context, DisplayActivity::class.java).apply {
+                                putExtra("STOCK_INFO", stock)
+                            }
+                            context.startActivity(intent)
+                        }
+                    }
                 }
             },
             modifier = Modifier

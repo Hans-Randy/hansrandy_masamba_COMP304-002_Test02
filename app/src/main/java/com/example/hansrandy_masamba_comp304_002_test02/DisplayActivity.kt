@@ -10,23 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModelProvider
-import com.example.hansrandy_masamba_comp304_002_test02.data.AppDatabase
-import com.example.hansrandy_masamba_comp304_002_test02.repository.StockRepository
 import com.example.hansrandy_masamba_comp304_002_test02.ui.theme.Hansrandy_masamba_COMP304002_Test02Theme
-import com.example.hansrandy_masamba_comp304_002_test02.viewmodel.StockViewModel
-import com.example.hansrandy_masamba_comp304_002_test02.viewmodel.StockViewModelFactory
 
 class DisplayActivity : ComponentActivity() {
-    private lateinit var viewModel: StockViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val database = AppDatabase.getDatabase(applicationContext)
-        val repository = StockRepository(database.stockDao())
-        val factory = StockViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[StockViewModel::class.java]
+        val stockInfo = intent.getParcelableExtra<com.example.hansrandy_masamba_comp304_002_test02.data.StockInfo>("STOCK_INFO")
 
         setContent {
             Hansrandy_masamba_COMP304002_Test02Theme {
@@ -35,22 +26,24 @@ class DisplayActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     DisplayScreen(
-                        viewModel = viewModel,
+                        stockInfo = stockInfo,
                         onBackClick = { finish() }
                     )
                 }
             }
         }
     }
+
+    companion object {
+        const val EXTRA_STOCK_INFO = "STOCK_INFO"
+    }
 }
 
 @Composable
 fun DisplayScreen(
-    viewModel: StockViewModel,
+    stockInfo: com.example.hansrandy_masamba_comp304_002_test02.data.StockInfo?,
     onBackClick: () -> Unit
 ) {
-    val selectedStock by viewModel.selectedStock.collectAsState()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -58,7 +51,7 @@ fun DisplayScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        if (selectedStock != null) {
+        if (stockInfo != null) {
             Text(
                 text = "Stock Information",
                 style = MaterialTheme.typography.headlineMedium,
@@ -66,25 +59,25 @@ fun DisplayScreen(
             )
 
             Text(
-                text = "Stock Symbol: ${selectedStock?.stockSymbol}",
+                text = "Stock Symbol: ${stockInfo.stockSymbol}",
                 fontSize = 18.sp,
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
             Text(
-                text = "Company Name: ${selectedStock?.companyName}",
+                text = "Company Name: ${stockInfo.companyName}",
                 fontSize = 18.sp,
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
             Text(
-                text = "Stock Quote: ${selectedStock?.stockQuote}",
+                text = "Stock Quote: ${stockInfo.stockQuote}",
                 fontSize = 18.sp,
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
             Text(
-                text = "Shares Sold: ${selectedStock?.sharesSold}",
+                text = "Shares Sold: ${stockInfo.sharesSold}",
                 fontSize = 18.sp,
                 modifier = Modifier.padding(bottom = 32.dp)
             )
